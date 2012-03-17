@@ -1,0 +1,2 @@
+Look into pluging into a servlet context when integrated into the servlet container.
+In this case the plugin should you the Spring WebApplicationContext ??
