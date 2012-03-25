@@ -4,6 +4,7 @@ import java.util.Map;
 
 public class Spring {
 
+	
 	public static Object getBean(String name) {
         if (SpringPlugin.applicationContext == null) {
             throw new SpringException("Application Context not started"); 

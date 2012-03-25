@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>spring-2.0</name>
+  <name>play-2.0-spring-module</name>
   <buildSpec>
     <buildCommand>
       <name>org.scala-ide.sdt.core.scalabuilder</name>

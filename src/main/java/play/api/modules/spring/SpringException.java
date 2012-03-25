@@ -9,6 +9,7 @@ package play.api.modules.spring;
  */
 public class SpringException extends RuntimeException {
 	
+	
 	public SpringException(String message) {
 		this(message, null);
 	}

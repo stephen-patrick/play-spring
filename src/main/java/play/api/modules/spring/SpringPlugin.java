@@ -28,6 +28,7 @@ import play.api.PlayException;
  */
 public class SpringPlugin extends Plugin {
 
+	
 	private static final String PLAY_SPRING_COMPONENT_SCAN_FLAG = "play-spring-component-scan";
 	private static final String PLAY_SPRING_COMPONENT_SCAN_BASE_PACKAGES = "play-spring-component-scan-base-packages";
 	private static final String PLAY_SPRING_ADD_PLAY_PROPERTIES = "play.spring.add-play-properties";
