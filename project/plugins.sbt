@@ -8,4 +8,4 @@ resolvers ++= Seq(
 
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.0.0-M3")
 
-addSbtPlugin("play" % "sbt-plugin" % "2.0-SNAPSHOT")
+addSbtPlugin("play" % "sbt-plugin" % Option(System.getProperty("play.version")).getOrElse("2.0"))

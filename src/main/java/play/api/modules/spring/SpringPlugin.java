@@ -28,18 +28,26 @@ import play.api.PlayException;
  */
 public class SpringPlugin extends Plugin {
 
-	
 	private static final String PLAY_SPRING_COMPONENT_SCAN_FLAG = "play-spring-component-scan";
 	private static final String PLAY_SPRING_COMPONENT_SCAN_BASE_PACKAGES = "play-spring-component-scan-base-packages";
 	private static final String PLAY_SPRING_ADD_PLAY_PROPERTIES = "play.spring.add-play-properties";
 	private static final String PLAY_SPRING_NAMESPACE_AWARE = "play.spring.namespace-aware";
 
-	public static GenericApplicationContext applicationContext;
+	public static ApplicationContext applicationContext;
 	private Application application;
-	
 	
 	public SpringPlugin(Application application) {
 		this.application = application;
+	}
+
+	
+	/**
+	 * Useful for setting the application context when the plugin
+	 * is not loaded through play
+	 * @param applicationContext			the spring applicaiton context
+	 */
+	public static void setApplicationContext(ApplicationContext applicationContext) {
+		SpringPlugin.applicationContext = applicationContext;
 	}
 	
 	
@@ -49,10 +57,7 @@ public class SpringPlugin extends Plugin {
 		if(application.configuration().getString("play.spring-enabled")==null || !application.configuration().getString("play.spring-enabled").equals("true")) {
 			return;
 		}
-		
-		
-		
-		
+
 		URL url = getCurrentPlayApplication().classloader()
 				.getResource(".application-context.xml");
 		if (url == null) {
@@ -89,7 +94,7 @@ public class SpringPlugin extends Plugin {
 			Thread.currentThread().setContextClassLoader(
 					PlayUtils.classloader());
 			try {
-				applicationContext.refresh();
+				((GenericApplicationContext)applicationContext).refresh();
 			} catch (BeanCreationException e) {
 				Throwable ex = e.getCause();
 				if (ex instanceof PlayException) {
@@ -146,7 +151,7 @@ public class SpringPlugin extends Plugin {
 			PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
 			configurer.setProperties(ConfigurationUtils
 					.createPropertiesFromPlayConfiguration());
-			applicationContext.addBeanFactoryPostProcessor(configurer);
+			((GenericApplicationContext)applicationContext).addBeanFactoryPostProcessor(configurer);
 		} else {
 			Logger.debug("PropertyPlaceholderConfigurer with Play properties NOT added");
 		}
@@ -154,7 +159,7 @@ public class SpringPlugin extends Plugin {
 
 	private XmlBeanDefinitionReader createXmlReader() {
 		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(
-				applicationContext);
+				(GenericApplicationContext)applicationContext);
 
 		if (ConfigurationUtils.isTrue(PLAY_SPRING_NAMESPACE_AWARE)) {
 			xmlReader.setNamespaceAware(true);
@@ -169,7 +174,7 @@ public class SpringPlugin extends Plugin {
 	 */
 	private void createApplicationContext() {
 		applicationContext = new GenericApplicationContext();
-		applicationContext.setClassLoader(getCurrentPlayApplication().classloader());
+		((GenericApplicationContext)applicationContext).setClassLoader(getCurrentPlayApplication().classloader());
 	}
 
 	@Override
@@ -181,7 +186,10 @@ public class SpringPlugin extends Plugin {
 		Logger.debug("Spring plugin stopping");
 		if (applicationContext != null) {
 	         Logger.debug("Closing Spring application context");
-	         applicationContext.close();
+	         if(applicationContext instanceof GenericApplicationContext) {
+	        	 ((GenericApplicationContext)applicationContext).close();
+	         }
+	        
 	    }
 		
 		Logger.debug("Spring plugin stopped");

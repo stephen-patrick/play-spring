@@ -8,10 +8,13 @@ object ApplicationBuild extends Build {
     val appVersion      = "1.0"
 
     val appDependencies = Seq(
-    		"play" %% "play" % "2.0-SNAPSHOT",
-    		"org.springframework" % "spring-asm" % "3.0.7.RELEASE",
-    		"org.springframework" % "spring-core" % "3.0.7.RELEASE",
-    		"org.springframework" % "spring-context-support" % "3.0.7.RELEASE"
+    		"play" % "play_2.9.1" % "2.0",
+    		"org.springframework" % "spring-asm" % "3.1.1.RELEASE",
+    		"org.springframework" % "spring-beans" % "3.1.1.RELEASE",
+    		"org.springframework" % "spring-core" % "3.1.1.RELEASE",
+    		"org.springframework" % "spring-context" % "3.1.1.RELEASE",
+    		"org.springframework" % "spring-expression" % "3.1.1.RELEASE",
+    		"org.springframework" % "spring-test" % "3.1.1.RELEASE"
     		
     )
     
